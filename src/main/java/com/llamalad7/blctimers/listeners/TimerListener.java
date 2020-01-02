@@ -55,25 +55,25 @@ public class TimerListener {
                         S3FPacketCustomPayload payload = (S3FPacketCustomPayload) msg;
                         if (payload.getChannelName().equals("badlion:timers")) {
                             String[] data = new String(payload.getBufferData().array()).split("\\|");
-                            JsonObject thing = new JsonParser().parse(data[1]).getAsJsonObject();
+                            JsonObject parsedPacket = new JsonParser().parse(data[1]).getAsJsonObject();
                             switch (data[0]) {
                                 case "ADD_TIMER":
                                     System.out.println("add");
                                     MCTimer timer = new MCTimer(
-                                            thing.get("repeating").getAsBoolean(),
-                                            thing.get("name").getAsString(),
-                                            thing.get("currentTime").getAsInt() / 20,
-                                            thing.get("time").getAsInt() / 20,
-                                            thing.get("item").getAsJsonObject().get("type").getAsString());
-                                    System.out.println(thing.get("item").getAsJsonObject().get("type").getAsString());
-                                    CountdownTimer.addTimer(thing.get("id").getAsString(), timer);
+                                            parsedPacket.get("repeating").getAsBoolean(),
+                                            parsedPacket.get("name").getAsString(),
+                                            parsedPacket.get("currentTime").getAsInt() / 20,
+                                            parsedPacket.get("time").getAsInt() / 20,
+                                            parsedPacket.get("item").getAsJsonObject().get("type").getAsString());
+                                    System.out.println(parsedPacket.get("item").getAsJsonObject().get("type").getAsString());
+                                    CountdownTimer.addTimer(parsedPacket.get("id").getAsString(), timer);
                                     CountdownTimer.start();
                                     break;
                                 case "SYNC_TIMERS":
                                     System.out.println("sync");
                                     CountdownTimer.setTimer(
-                                            thing.get("id").getAsString(),
-                                            thing.get("time").getAsInt() / 20);
+                                            parsedPacket.get("id").getAsString(),
+                                            parsedPacket.get("time").getAsInt() / 20);
                                     break;
                             }
                         }

@@ -31,11 +31,11 @@ import java.util.ArrayList;
 
 public class HUDGui extends Gui {
 
-    private static final int TEXT_COLOR = 0xFFFFFF;
+    private final int TEXT_COLOR = 0xFFFFFF;
 
-    private static final int LINE_HEIGHT = 10;
+    private final int LINE_HEIGHT = 10;
 
-    private static final int ICON_SIZE = 16;
+    private final int ICON_SIZE = 16;
 
     private final Minecraft mc;
 
