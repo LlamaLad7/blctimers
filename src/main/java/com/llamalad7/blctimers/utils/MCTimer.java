@@ -25,14 +25,16 @@ public class MCTimer {
     public int time;
     public ItemStack item;
     public int startTime;
+
     public MCTimer(boolean r, String n, int t, int startT, String itemName) {
-        repeated=r;
-        name=n;
-        time=t;
-        startTime=startT;
-        item=new ItemStack(Item.getByNameOrId(itemName.toLowerCase()));
+        repeated = r;
+        name = n;
+        time = t;
+        startTime = startT;
+        item = new ItemStack(Item.getByNameOrId(itemName.toLowerCase()));
     }
+
     public String getFormattedTime() {
-        return name + ": " + Math.floorDiv(time,60) + ":" + String.format("%02d", Math.floorMod(time, 60));
+        return name + ": " + Math.floorDiv(time, 60) + ":" + String.format("%02d", Math.floorMod(time, 60));
     }
 }

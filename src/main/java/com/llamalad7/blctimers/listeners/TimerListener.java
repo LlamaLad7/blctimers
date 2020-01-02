@@ -31,58 +31,59 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 public class TimerListener {
 
 
-        private static TimerListener INSTANCE = new TimerListener();
+    private static TimerListener INSTANCE = new TimerListener();
 
-        private TimerListener() {}
+    private TimerListener() {
+    }
 
-        public static TimerListener getInstance() {
-            return INSTANCE;
-        }
+    public static TimerListener getInstance() {
+        return INSTANCE;
+    }
 
-        @SubscribeEvent
-        public void onWorldLoad(WorldEvent.Load event) {
-            CountdownTimer.reset();
-        }
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event) {
+        CountdownTimer.reset();
+    }
 
-        @SubscribeEvent
-        public void onNetwork2(FMLNetworkEvent event) {
-            if (event instanceof FMLNetworkEvent.ClientConnectedToServerEvent) {
-                event.manager.channel().pipeline().addAfter("encoder", "test_packet_handler", new SimpleChannelInboundHandler<Packet>() {
-                    @Override
-                    protected void channelRead0(ChannelHandlerContext ctx, Packet msg) throws Exception {
-                        if (msg instanceof S3FPacketCustomPayload) {
-                            S3FPacketCustomPayload payload = (S3FPacketCustomPayload) msg;
-                            if (payload.getChannelName().equals("badlion:timers")) {
-                                String[] data = new String(payload.getBufferData().array()).split("\\|");
-                                JsonObject thing = new JsonParser().parse(data[1]).getAsJsonObject();
-                                switch (data[0]) {
-                                    case "ADD_TIMER":
-                                        System.out.println("add");
-                                        MCTimer timer = new MCTimer(
-                                                thing.get("repeating").getAsBoolean(),
-                                                thing.get("name").getAsString(),
-                                                thing.get("currentTime").getAsInt()/20,
-                                                thing.get("time").getAsInt()/20,
-                                                thing.get("item").getAsJsonObject().get("type").getAsString());
-                                        System.out.println(thing.get("item").getAsJsonObject().get("type").getAsString());
-                                        CountdownTimer.addTimer(thing.get("id").getAsString(), timer);
-                                        CountdownTimer.start();
-                                        break;
-                                    case "SYNC_TIMERS":
-                                        System.out.println("sync");
-                                        CountdownTimer.setTimer(
-                                                thing.get("id").getAsString(),
-                                                thing.get("time").getAsInt()/20);
-                                        break;
-                                }
+    @SubscribeEvent
+    public void onNetwork2(FMLNetworkEvent event) {
+        if (event instanceof FMLNetworkEvent.ClientConnectedToServerEvent) {
+            event.manager.channel().pipeline().addAfter("encoder", "test_packet_handler", new SimpleChannelInboundHandler<Packet>() {
+                @Override
+                protected void channelRead0(ChannelHandlerContext ctx, Packet msg) throws Exception {
+                    if (msg instanceof S3FPacketCustomPayload) {
+                        S3FPacketCustomPayload payload = (S3FPacketCustomPayload) msg;
+                        if (payload.getChannelName().equals("badlion:timers")) {
+                            String[] data = new String(payload.getBufferData().array()).split("\\|");
+                            JsonObject thing = new JsonParser().parse(data[1]).getAsJsonObject();
+                            switch (data[0]) {
+                                case "ADD_TIMER":
+                                    System.out.println("add");
+                                    MCTimer timer = new MCTimer(
+                                            thing.get("repeating").getAsBoolean(),
+                                            thing.get("name").getAsString(),
+                                            thing.get("currentTime").getAsInt() / 20,
+                                            thing.get("time").getAsInt() / 20,
+                                            thing.get("item").getAsJsonObject().get("type").getAsString());
+                                    System.out.println(thing.get("item").getAsJsonObject().get("type").getAsString());
+                                    CountdownTimer.addTimer(thing.get("id").getAsString(), timer);
+                                    CountdownTimer.start();
+                                    break;
+                                case "SYNC_TIMERS":
+                                    System.out.println("sync");
+                                    CountdownTimer.setTimer(
+                                            thing.get("id").getAsString(),
+                                            thing.get("time").getAsInt() / 20);
+                                    break;
                             }
                         }
-                        ctx.fireChannelRead(msg);
                     }
-                });
-            }
+                    ctx.fireChannelRead(msg);
+                }
+            });
         }
-
-
     }
+
+
+}
 

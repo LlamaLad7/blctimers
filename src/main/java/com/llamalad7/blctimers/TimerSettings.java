@@ -20,64 +20,62 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
 
-public class TimerSettings
-{
-	private Configuration config;
-	public boolean enabled;
-	public int xpos;
-	public int ypos;
-	public int scale;
+public class TimerSettings {
+    private Configuration config;
+    public boolean enabled;
+    public int xpos;
+    public int ypos;
+    public int scale;
 
-	public TimerSettings(Configuration config)
-	{
-		this.config = config;
-	}
+    public TimerSettings(Configuration config) {
+        this.config = config;
+    }
 
-	public void saveConfig()
-	{
-		updateConfig(false);
-		config.save();
-	}
+    public void saveConfig() {
+        updateConfig(false);
+        config.save();
+    }
 
-	public void loadConfig()
-	{
-		config.load();
-		updateConfig(true);
-	}
+    public void loadConfig() {
+        config.load();
+        updateConfig(true);
+    }
 
-	public void resetConfig()
-	{
-		Property prop;
+    public void resetConfig() {
+        Property prop;
 
-		prop = config.get("All", "Enabled", true);
-		prop.set(enabled = true);
+        prop = config.get("All", "Enabled", true);
+        prop.set(enabled = true);
 
-		prop = config.get("All", "XPosition", 2);
-		prop.set(xpos = 2);
+        prop = config.get("All", "XPosition", 2);
+        prop.set(xpos = 2);
 
-		prop = config.get("All", "YPosition", 2);
-		prop.set(ypos = 2);
+        prop = config.get("All", "YPosition", 2);
+        prop.set(ypos = 2);
 
-		prop = config.get("All", "Scale", 100);
-		prop.set(scale = 100);
+        prop = config.get("All", "Scale", 100);
+        prop.set(scale = 100);
 
-		config.save();
-	}
+        config.save();
+    }
 
-	private void updateConfig(boolean load)
-	{
-		Property prop;
+    private void updateConfig(boolean load) {
+        Property prop;
 
-		prop = config.get("All", "Enabled", true);
-		if (load) enabled = prop.getBoolean(); else prop.set(enabled);
+        prop = config.get("All", "Enabled", true);
+        if (load) enabled = prop.getBoolean();
+        else prop.set(enabled);
 
-		prop = config.get("All", "XPosition", 2);
-		if (load) xpos = prop.getInt(); else prop.set(xpos);
+        prop = config.get("All", "XPosition", 2);
+        if (load) xpos = prop.getInt();
+        else prop.set(xpos);
 
-		prop = config.get("All", "YPosition", 2);
-		if (load) ypos = prop.getInt(); else prop.set(ypos);
+        prop = config.get("All", "YPosition", 2);
+        if (load) ypos = prop.getInt();
+        else prop.set(ypos);
 
-		prop = config.get("All", "Scale", 100);
-		if (load) scale = prop.getInt(); else prop.set(scale);
-	}
+        prop = config.get("All", "Scale", 100);
+        if (load) scale = prop.getInt();
+        else prop.set(scale);
+    }
 }
