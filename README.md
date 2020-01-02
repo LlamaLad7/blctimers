@@ -2,6 +2,8 @@
 
 Forge mod by [LlamaLad7](https://github.com/lego3708) which displays timers based on packets sent by servers for the Badlion Client.
 
+Downloads are in the **Releases** tab.
+
 Friend me on Discord (LlamaLad7#4826) for support / feature suggestions.
 
 ## Disclaimer
