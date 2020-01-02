@@ -21,8 +21,8 @@ plugins {
 }
 */
 version = "1.0"
-group= "com.llamalad7.bedwarstimers" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "bedwarstimers"
+group= "com.llamalad7.blctimers" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "blctimers"
 sourceCompatibility = 8
 targetCompatibility = 8
 
