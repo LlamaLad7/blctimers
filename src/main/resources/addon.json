@@ -1,0 +1,7 @@
+{
+  "name":"BLC Timers",
+  "version":"1.0",
+  "mainClass":"com.llamalad7.blctimers.BLCTimersMod",
+  "desc":"Displays timer data sent by servers for the Badlion Client",
+  "versionCode": "1.0"
+}
