@@ -1,0 +1,16 @@
+[
+{
+  "modid": "blctimers",
+  "name": "BLC Timers",
+  "description": "A forge mod that displays timer data sent by servers for the Badlion Client",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["LlamaLad7"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
