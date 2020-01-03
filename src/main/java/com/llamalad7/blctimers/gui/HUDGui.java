@@ -22,6 +22,7 @@ import com.llamalad7.blctimers.utils.MCTimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -72,22 +73,27 @@ public class HUDGui extends Gui {
             CountdownTimer.needRemoving = new ArrayList<>();
         }
         if (!CountdownTimer.isResetting) {
+            GlStateManager.pushMatrix();
+            float scale = ((float) settings.scale)/100;
+            GlStateManager.scale(scale, scale, 0);
             for (MCTimer timer : CountdownTimer.timers.values()) {
                 drawTimer(timer.item, timer.getFormattedTime());
             }
+            GlStateManager.popMatrix();
         }
 
     }
 
     private void drawTimer(ItemStack itemStack, String text) {
+        float scale = ((float) settings.scale) / 100;
         RenderHelper.enableGUIStandardItemLighting();
         mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
-                settings.xpos + 1,
-                currentHeight);
+                (int) (settings.xpos / scale + 1),
+                (int) (currentHeight / scale));
         RenderHelper.disableStandardItemLighting();
-        drawString(mc.fontRendererObj, " " + text, ICON_SIZE + settings.xpos,
-                currentHeight + (ICON_SIZE - LINE_HEIGHT) / 2 + 1,
-                TEXT_COLOR);
-        currentHeight += ICON_SIZE + 1;
+        drawString(mc.fontRendererObj, " " + text, (int) (ICON_SIZE + settings.xpos / scale),
+                (int) (currentHeight / scale + (ICON_SIZE - LINE_HEIGHT) / 2 + 1),
+                0xFFFFFF);
+        currentHeight += ICON_SIZE*scale + 1;
     }
 }

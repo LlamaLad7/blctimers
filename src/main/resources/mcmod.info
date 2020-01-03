@@ -5,7 +5,7 @@
   "description": "A forge mod that displays timer data sent by servers for the Badlion Client",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://github.com/lego3708/blctimers",
   "updateUrl": "",
   "authorList": ["LlamaLad7"],
   "credits": "",

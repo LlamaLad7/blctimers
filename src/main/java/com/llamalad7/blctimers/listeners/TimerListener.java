@@ -58,7 +58,6 @@ public class TimerListener {
                             JsonObject parsedPacket = new JsonParser().parse(data[1]).getAsJsonObject();
                             switch (data[0]) {
                                 case "ADD_TIMER":
-                                    System.out.println("add");
                                     MCTimer timer = new MCTimer(
                                             parsedPacket.get("repeating").getAsBoolean(),
                                             parsedPacket.get("name").getAsString(),
@@ -70,7 +69,6 @@ public class TimerListener {
                                     CountdownTimer.start();
                                     break;
                                 case "SYNC_TIMERS":
-                                    System.out.println("sync");
                                     CountdownTimer.setTimer(
                                             parsedPacket.get("id").getAsString(),
                                             parsedPacket.get("time").getAsInt() / 20);
