@@ -1,10 +1,25 @@
+/*
+ *       Copyright (C) 2019-present LlamaLad7 <https://github.com/lego3708>
+ *
+ *       This program is free software: you can redistribute it and/or modify
+ *       it under the terms of the GNU General Public License as published
+ *       by the Free Software Foundation, either version 3 of the License, or
+ *       (at your option) any later version.
+ *
+ *       This program is distributed in the hope that it will be useful,
+ *       but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *       GNU Lesser General Public License for more details.
+ *
+ *       You should have received a copy of the GNU General Public License
+ *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.llamalad7.blctimers.gui;
 
 import com.llamalad7.blctimers.BLCTimersMod;
 import com.llamalad7.blctimers.TimerSettings;
 import com.llamalad7.blctimers.utils.CountdownTimer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -46,7 +61,8 @@ public class ConfigGui extends GuiScreen {
             settings.ypos = mouseY;
         }
         settings.scale = scaleSlider.getValueInt();
-        if (settings.enabled && CountdownTimer.timers.size() == 0) drawTimer(new ItemStack(diamond), "Demo Timer: 0:10");
+        if (settings.enabled && CountdownTimer.timers.size() == 0)
+            drawTimer(new ItemStack(diamond), "Demo Timer: 0:10");
     }
 
     @Override
