@@ -11,19 +11,23 @@
  *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *       GNU Lesser General Public License for more details.
  *
- *       You should have received a copy of the GNU Lesser General Public License
+ *       You should have received a copy of the GNU General Public License
  *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.llamalad7.blctimers.utils;
 
 
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+
 import java.util.*;
 
-public class CountdownTimer extends TimerTask {
+public class CountdownTimer {
     private static CountdownTimer INSTANCE = new CountdownTimer();
     public static boolean isRunning = false;
-    public static boolean isResetting = false;
-    private static final Timer timer = new Timer();
+    private static int tick = 0;
+    public static boolean needsResetting = false;
     public static List<String> needRemoving = new ArrayList<>();
     public static Map<String, MCTimer> timers = new HashMap<>();
 
@@ -34,16 +38,22 @@ public class CountdownTimer extends TimerTask {
         return INSTANCE;
     }
 
-    @Override
-    public void run() {
-        for (Map.Entry<String, MCTimer> entry : timers.entrySet()) {
-            MCTimer timer = entry.getValue();
-            timer.time--;
-            if (timer.time == 0) {
-                if (timer.repeated) {
-                    timer.time = timer.startTime;
-                } else {
-                    needRemoving.add(entry.getKey());
+    @SubscribeEvent
+    public void tickEvent(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            tick++;
+            if (tick == 20) {
+                tick = 0;
+                for (Map.Entry<String, MCTimer> entry : timers.entrySet()) {
+                    MCTimer timer = entry.getValue();
+                    timer.time--;
+                    if (timer.time == 0) {
+                        if (timer.repeated) {
+                            timer.time = timer.startTime;
+                        } else {
+                            needRemoving.add(entry.getKey());
+                        }
+                    }
                 }
             }
         }
@@ -53,10 +63,6 @@ public class CountdownTimer extends TimerTask {
         timers.put(id, timer);
     }
 
-    public static void demoTimer() {
-        addTimer(Integer.toString(timers.size()), new MCTimer(true, "Demo Timer", 10, 10, "diamond"));
-        start();
-    }
 
     public static void setTimer(String id, int time) {
         if (timers.containsKey(id)) {
@@ -67,20 +73,18 @@ public class CountdownTimer extends TimerTask {
     public static void start() {
         if (!isRunning) {
             isRunning = true;
-            timer.schedule(INSTANCE, 1000, 1000);
+            MinecraftForge.EVENT_BUS.register(CountdownTimer.getInstance());
         }
     }
 
     public static void stop() {
         isRunning = false;
-        INSTANCE.cancel();
-        INSTANCE = new CountdownTimer();
+        MinecraftForge.EVENT_BUS.unregister(CountdownTimer.getInstance());
     }
 
     public static void reset() {
-        isResetting = true;
+        needsResetting = true;
+        tick = 0;
         stop();
-        timers = new HashMap<String, MCTimer>();
-        isResetting = false;
     }
 }

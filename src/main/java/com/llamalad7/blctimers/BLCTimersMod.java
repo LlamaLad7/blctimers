@@ -11,14 +11,15 @@
  *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *       GNU Lesser General Public License for more details.
  *
- *       You should have received a copy of the GNU Lesser General Public License
+ *       You should have received a copy of the GNU General Public License
  *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.llamalad7.blctimers;
 
 import com.llamalad7.blctimers.command.ConfigCommand;
-import com.llamalad7.blctimers.listeners.TimerListener;
 import com.llamalad7.blctimers.gui.HUDGui;
+import com.llamalad7.blctimers.listeners.TimerListener;
+import com.llamalad7.blctimers.listeners.UpdateListener;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -30,7 +31,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(name = BLCTimersMod.NAME, modid = BLCTimersMod.MODID, version = BLCTimersMod.VERSION)
 public class BLCTimersMod {
     public static final String MODID = "blctimers";
-    public static final String VERSION = "1.1";
+    public static final String VERSION = "1.2";
     public static final String NAME = "BLC Timers";
     private static TimerSettings settings;
 
@@ -44,6 +45,7 @@ public class BLCTimersMod {
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new HUDGui(settings));
         MinecraftForge.EVENT_BUS.register(TimerListener.getInstance());
+        MinecraftForge.EVENT_BUS.register(UpdateListener.getInstance());
         ClientCommandHandler.instance.registerCommand(new ConfigCommand(this));
     }
 
