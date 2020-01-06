@@ -19,6 +19,7 @@ package com.llamalad7.blctimers.listeners;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.llamalad7.blctimers.BLCTimersMod;
+import com.llamalad7.blctimers.utils.Multithreading;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
@@ -50,23 +51,38 @@ public class UpdateListener {
 
     @SubscribeEvent
     public void clientTickEvent(EntityJoinWorldEvent event) throws IOException {
-        MinecraftForge.EVENT_BUS.unregister(this);
-        URL url = new URL("https://raw.githubusercontent.com/lego3708/blctimers/master/latest.json");
-        InputStream is = url.openStream();
-        StringWriter writer = new StringWriter();
-        IOUtils.copy(is, writer, "UTF-8");
-        JsonObject data = new JsonParser().parse(writer.toString()).getAsJsonObject();
-        if (data.get("version").getAsFloat() > parseFloat(BLCTimersMod.VERSION)) {
-            IChatComponent separator = new ChatComponentText("-----------------------------------------------------").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
-            Minecraft.getMinecraft().thePlayer.addChatMessage(separator);
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "There is a Timers Mod update!"));
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + data.get("message").getAsString()));
-            IChatComponent downloadLatest = new ChatComponentText(EnumChatFormatting.GOLD + "Please download the latest version by clicking ");
-            IChatComponent here = new ChatComponentText(EnumChatFormatting.GOLD + EnumChatFormatting.BOLD.toString() + EnumChatFormatting.UNDERLINE + "here");
-            here.setChatStyle(new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.curseforge.com/minecraft/mc-mods/timers/files")).setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(EnumChatFormatting.AQUA + "Download the Latest Version"))));
-            downloadLatest.appendSibling(here);
-            Minecraft.getMinecraft().thePlayer.addChatMessage(downloadLatest);
-            Minecraft.getMinecraft().thePlayer.addChatMessage(separator);
-        }
+        Multithreading.runAsync(() -> {
+            InputStream is = null;
+            try {
+                MinecraftForge.EVENT_BUS.unregister(this);
+                URL url = new URL("https://raw.githubusercontent.com/lego3708/blctimers/master/latest.json");
+                is = url.openStream();
+                StringWriter writer = new StringWriter();
+                IOUtils.copy(is, writer, "UTF-8");
+                JsonObject data = new JsonParser().parse(writer.toString()).getAsJsonObject();
+                if (data.get("version").getAsFloat() > parseFloat(BLCTimersMod.VERSION)) {
+                    IChatComponent separator = new ChatComponentText("-----------------------------------------------------").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(separator);
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "There is a Timers Mod update!"));
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + data.get("message").getAsString()));
+                    IChatComponent downloadLatest = new ChatComponentText(EnumChatFormatting.GOLD + "Please download the latest version by clicking ");
+                    IChatComponent here = new ChatComponentText(EnumChatFormatting.GOLD + EnumChatFormatting.BOLD.toString() + EnumChatFormatting.UNDERLINE + "here");
+                    here.setChatStyle(new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.curseforge.com/minecraft/mc-mods/timers/files")).setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(EnumChatFormatting.AQUA + "Download the Latest Version"))));
+                    downloadLatest.appendSibling(here);
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(downloadLatest);
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(separator);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
     }
 }
