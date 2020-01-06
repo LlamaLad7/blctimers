@@ -19,6 +19,7 @@ package com.llamalad7.blctimers.listeners;
 import cc.hyperium.event.EventBus;
 import cc.hyperium.event.InvokeEvent;
 import cc.hyperium.event.world.EntityJoinWorldEvent;
+import cc.hyperium.mods.sk1ercommon.Multithreading;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.llamalad7.blctimers.BLCTimersMod;
@@ -47,20 +48,28 @@ public class UpdateListener {
     }
 
     @InvokeEvent
-    public void clientTickEvent(EntityJoinWorldEvent event) throws IOException {
-        EventBus.INSTANCE.unregister(this);
-        URL url = new URL("https://raw.githubusercontent.com/lego3708/blctimers/hyperium/latest.json");
-        InputStream is = url.openStream();
-        StringWriter writer = new StringWriter();
-        IOUtils.copy(is, writer, "UTF-8");
-        JsonObject data = new JsonParser().parse(writer.toString()).getAsJsonObject();
-        if (data.get("version").getAsFloat() > parseFloat(BLCTimersMod.VERSION)) {
-            IChatComponent separator = new ChatComponentText("-----------------------------------------------------").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
-            Minecraft.getMinecraft().thePlayer.addChatMessage(separator);
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "There is a Timers Mod update!"));
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + data.get("message").getAsString()));
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "Please reinstall through the Hyperium Installer!"));
-            Minecraft.getMinecraft().thePlayer.addChatMessage(separator);
-        }
+    public void clientTickEvent(EntityJoinWorldEvent event) {
+        Multithreading.runAsync(() -> {
+            try {
+                EventBus.INSTANCE.unregister(this);
+                URL url = new URL("https://raw.githubusercontent.com/lego3708/blctimers/hyperium/latest.json");
+                InputStream is = url.openStream();
+                StringWriter writer = new StringWriter();
+                IOUtils.copy(is, writer, "UTF-8");
+                JsonObject data = new JsonParser().parse(writer.toString()).getAsJsonObject();
+                if (data.get("version").getAsFloat() > parseFloat(BLCTimersMod.VERSION)) {
+                    IChatComponent separator = new ChatComponentText("-----------------------------------------------------").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(separator);
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "There is a Timers Mod update!"));
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + data.get("message").getAsString()));
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "Please reinstall through the Hyperium Installer!"));
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(separator);
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 }
