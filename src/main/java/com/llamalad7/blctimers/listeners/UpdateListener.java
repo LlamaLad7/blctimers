@@ -50,10 +50,11 @@ public class UpdateListener {
     @InvokeEvent
     public void clientTickEvent(EntityJoinWorldEvent event) {
         Multithreading.runAsync(() -> {
+            InputStream is = null;
             try {
                 EventBus.INSTANCE.unregister(this);
                 URL url = new URL("https://raw.githubusercontent.com/lego3708/blctimers/hyperium/latest.json");
-                InputStream is = url.openStream();
+                is = url.openStream();
                 StringWriter writer = new StringWriter();
                 IOUtils.copy(is, writer, "UTF-8");
                 JsonObject data = new JsonParser().parse(writer.toString()).getAsJsonObject();
@@ -68,6 +69,13 @@ public class UpdateListener {
             }
             catch (IOException e) {
                 e.printStackTrace();
+            }
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
