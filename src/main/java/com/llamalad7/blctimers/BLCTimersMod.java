@@ -11,25 +11,25 @@
  *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *       GNU Lesser General Public License for more details.
  *
- *       You should have received a copy of the GNU Lesser General Public License
+ *       You should have received a copy of the GNU General Public License
  *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.llamalad7.blctimers;
 
 import cc.hyperium.Hyperium;
-import cc.hyperium.addons.sidebar.config.Configuration;
 import cc.hyperium.event.EventBus;
 import cc.hyperium.event.InvokeEvent;
 import cc.hyperium.event.client.InitializationEvent;
 import cc.hyperium.event.client.PreInitializationEvent;
 import cc.hyperium.internal.addons.IAddon;
 import com.llamalad7.blctimers.command.ConfigCommand;
-import com.llamalad7.blctimers.listeners.TimerListener;
 import com.llamalad7.blctimers.gui.HUDGui;
+import com.llamalad7.blctimers.listeners.TimerListener;
+import com.llamalad7.blctimers.listeners.UpdateListener;
 
 public class BLCTimersMod implements IAddon {
     public static final String MODID = "blctimers";
-    public static final String VERSION = "1.1";
+    public static final String VERSION = "1.2";
     public static final String NAME = "BLC Timers";
     private static TimerSettings settings;
 
@@ -44,6 +44,7 @@ public class BLCTimersMod implements IAddon {
         Hyperium.INSTANCE.getHandlers().getCommandHandler().registerCommand(new ConfigCommand(this));
         EventBus.INSTANCE.register(new HUDGui(settings));
         EventBus.INSTANCE.register(TimerListener.getInstance());
+        EventBus.INSTANCE.register(UpdateListener.getInstance());
     }
 
     @InvokeEvent

@@ -11,7 +11,7 @@
  *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *       GNU Lesser General Public License for more details.
  *
- *       You should have received a copy of the GNU Lesser General Public License
+ *       You should have received a copy of the GNU General Public License
  *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.llamalad7.blctimers.listeners;
@@ -23,15 +23,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.llamalad7.blctimers.utils.CountdownTimer;
 import com.llamalad7.blctimers.utils.MCTimer;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.Unpooled;
-import io.netty.buffer.UnpooledHeapByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 import net.minecraft.network.Packet;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.network.play.server.S3FPacketCustomPayload;
 
 public class TimerListener {

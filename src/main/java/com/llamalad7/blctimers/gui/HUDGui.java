@@ -11,7 +11,7 @@
  *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *       GNU Lesser General Public License for more details.
  *
- *       You should have received a copy of the GNU Lesser General Public License
+ *       You should have received a copy of the GNU General Public License
  *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.llamalad7.blctimers.gui;
@@ -28,6 +28,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HUDGui extends Gui {
 
@@ -65,21 +66,23 @@ public class HUDGui extends Gui {
     }
 
     private void renderTimers() {
+        if (CountdownTimer.needsResetting) {
+            CountdownTimer.timers = new HashMap<>();
+            CountdownTimer.needsResetting = false;
+        }
         if (CountdownTimer.needRemoving.size() != 0) {
             for (String id : CountdownTimer.needRemoving) {
                 CountdownTimer.timers.remove(id);
             }
             CountdownTimer.needRemoving = new ArrayList<>();
         }
-        if (!CountdownTimer.isResetting) {
-            GlStateManager.pushMatrix();
-            float scale = ((float) settings.scale)/100;
-            GlStateManager.scale(scale, scale, 0);
-            for (MCTimer timer : CountdownTimer.timers.values()) {
-                drawTimer(timer.item, timer.getFormattedTime());
-            }
-            GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        float scale = ((float) settings.scale) / 100;
+        GlStateManager.scale(scale, scale, 0);
+        for (MCTimer timer : CountdownTimer.timers.values()) {
+            drawTimer(timer.item, timer.getFormattedTime());
         }
+        GlStateManager.popMatrix();
 
     }
 
@@ -93,6 +96,6 @@ public class HUDGui extends Gui {
         drawString(mc.fontRendererObj, " " + text, (int) (ICON_SIZE + settings.xpos / scale),
                 (int) (currentHeight / scale + (ICON_SIZE - LINE_HEIGHT) / 2 + 1),
                 0xFFFFFF);
-        currentHeight += ICON_SIZE*scale + 1;
+        currentHeight += ICON_SIZE * scale + 1;
     }
 }

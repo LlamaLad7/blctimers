@@ -11,19 +11,26 @@
  *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *       GNU Lesser General Public License for more details.
  *
- *       You should have received a copy of the GNU Lesser General Public License
+ *       You should have received a copy of the GNU General Public License
  *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.llamalad7.blctimers.utils;
 
 
-import java.util.*;
+import cc.hyperium.event.EventBus;
+import cc.hyperium.event.InvokeEvent;
+import cc.hyperium.event.client.TickEvent;
 
-public class CountdownTimer extends TimerTask {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class CountdownTimer {
     private static CountdownTimer INSTANCE = new CountdownTimer();
     public static boolean isRunning = false;
-    public static boolean isResetting = false;
-    private static final Timer timer = new Timer();
+    private static int tick = 0;
+    public static boolean needsResetting = false;
     public static List<String> needRemoving = new ArrayList<>();
     public static Map<String, MCTimer> timers = new HashMap<>();
 
@@ -34,16 +41,20 @@ public class CountdownTimer extends TimerTask {
         return INSTANCE;
     }
 
-    @Override
-    public void run() {
-        for (Map.Entry<String, MCTimer> entry : timers.entrySet()) {
-            MCTimer timer = entry.getValue();
-            timer.time--;
-            if (timer.time == 0) {
-                if (timer.repeated) {
-                    timer.time = timer.startTime;
-                } else {
-                    needRemoving.add(entry.getKey());
+    @InvokeEvent
+    public void tickEvent(TickEvent event) {
+        tick += 1;
+        if (tick == 20) {
+            tick = 0;
+            for (Map.Entry<String, MCTimer> entry : timers.entrySet()) {
+                MCTimer timer = entry.getValue();
+                timer.time--;
+                if (timer.time == 0) {
+                    if (timer.repeated) {
+                        timer.time = timer.startTime;
+                    } else {
+                        needRemoving.add(entry.getKey());
+                    }
                 }
             }
         }
@@ -67,20 +78,18 @@ public class CountdownTimer extends TimerTask {
     public static void start() {
         if (!isRunning) {
             isRunning = true;
-            timer.schedule(INSTANCE, 1000, 1000);
+            EventBus.INSTANCE.register(CountdownTimer.getInstance());
         }
     }
 
     public static void stop() {
         isRunning = false;
-        INSTANCE.cancel();
-        INSTANCE = new CountdownTimer();
+        EventBus.INSTANCE.unregister(CountdownTimer.getInstance());
     }
 
     public static void reset() {
-        isResetting = true;
+        needsResetting = true;
+        tick = 0;
         stop();
-        timers = new HashMap<String, MCTimer>();
-        isResetting = false;
     }
 }

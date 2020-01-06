@@ -11,30 +11,15 @@
  *       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *       GNU Lesser General Public License for more details.
  *
- *       You should have received a copy of the GNU Lesser General Public License
+ *       You should have received a copy of the GNU General Public License
  *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.llamalad7.blctimers.command;
 
 import cc.hyperium.Hyperium;
 import cc.hyperium.commands.BaseCommand;
-import cc.hyperium.event.EventBus;
-import cc.hyperium.event.InvokeEvent;
-import cc.hyperium.event.client.TickEvent;
 import com.llamalad7.blctimers.BLCTimersMod;
 import com.llamalad7.blctimers.gui.ConfigGui;
-import com.llamalad7.blctimers.utils.CountdownTimer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.NumberInvalidException;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-
-import static java.lang.Integer.parseInt;
 
 public class ConfigCommand implements BaseCommand {
     private BLCTimersMod mod;
@@ -55,13 +40,7 @@ public class ConfigCommand implements BaseCommand {
 
     @Override
     public void onExecute(String[] args) {
-        EventBus.INSTANCE.register(this);
-    }
-
-    @InvokeEvent
-    public void onClientTick(TickEvent event) {
-        EventBus.INSTANCE.unregister(this);
-        Minecraft.getMinecraft().displayGuiScreen(new ConfigGui(mod));
+        Hyperium.INSTANCE.getHandlers().getGuiDisplayHandler().setDisplayNextTick(new ConfigGui(mod));
     }
 }
 
