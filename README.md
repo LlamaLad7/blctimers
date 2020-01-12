@@ -6,7 +6,7 @@ Multithreading implementation by Team Hyperium: https://github.com/HyperiumClien
 
 Downloads are in the **Releases** tab.
 
-Friend me on Discord (LlamaLad7#4826) for support / feature suggestions.
+Friend me on Discord (LlamaLad#0001) for support / feature suggestions.
 
 ## What I'm working on
 Config GUI (Done)
