@@ -6,7 +6,7 @@ Configure with `/timers`
 
 Downloads are in the **Releases** tab.
 
-Friend me on Discord (LlamaLad7#0001) for support / feature suggestions.
+Friend me on Discord (LlamaLad7#7444) for support / feature suggestions.
 
 ## What I'm working on
 Config GUI (Done)
