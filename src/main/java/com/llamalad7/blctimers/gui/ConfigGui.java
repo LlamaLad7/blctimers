@@ -36,6 +36,8 @@ public class ConfigGui extends GuiScreen {
     private boolean dragging;
     private GuiSlider scaleSlider;
     private GuiButton enabledButton;
+    private GuiButton iconButton;
+    private GuiButton textButton;
     private final String demoText = "Demo Timer: 0:10";
     private final String demoTime = "0:10";
 
@@ -49,8 +51,8 @@ public class ConfigGui extends GuiScreen {
         //label = new GuiLabel(mc.fontRendererObj, 0, width / 2 - 50, height / 2 - 75, 100, 20, 0xFFFFFF);
         buttonList.add(enabledButton = new GuiButton(0, width / 2 - 50, height / 2 - 50, 100, 20, "Timers: " + getColoredBool(settings.enabled)));
         buttonList.add(scaleSlider = new GuiSlider(1, width / 2 - 50, height / 2 - 25, 100, 20, "Scale: ", "%", 10, 200, settings.scale, false, true));
-        buttonList.add(enabledButton = new GuiButton(3, width / 2 - 50, height / 2, 100, 20, "Icons: " + getColoredBool(settings.showIcon)));
-        buttonList.add(enabledButton = new GuiButton(4, width / 2 - 50, height / 2 + 25, 100, 20, "Names: " + getColoredBool(settings.showText)));
+        buttonList.add(iconButton = new GuiButton(3, width / 2 - 50, height / 2, 100, 20, "Icons: " + getColoredBool(settings.showIcon)));
+        buttonList.add(textButton = new GuiButton(4, width / 2 - 50, height / 2 + 25, 100, 20, "Names: " + getColoredBool(settings.showText)));
         buttonList.add(new GuiButton(2, width / 2 - 50, height / 2 + 50, 100, 20, "Reset Config"));
     }
 
@@ -123,6 +125,8 @@ public class ConfigGui extends GuiScreen {
                 scaleSlider.setValue(settings.scale);
                 scaleSlider.updateSlider();
                 enabledButton.displayString = "Timers: " + getColoredBool(settings.enabled);
+                textButton.displayString = "Names: " + getColoredBool(settings.showText);
+                iconButton.displayString = "Icons: " + getColoredBool(settings.showIcon);
                 break;
             case 3:
                 settings.showIcon = !settings.showIcon;
