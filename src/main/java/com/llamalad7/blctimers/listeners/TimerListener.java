@@ -66,6 +66,7 @@ public class TimerListener {
                         CountdownTimer.setTimer(
                                 parsedPacket.get("id").getAsString(),
                                 parsedPacket.get("time").getAsInt() / 20);
+                        CountdownTimer.tick = parsedPacket.get("time").getAsInt() % 20;
                         break;
                 }
             }

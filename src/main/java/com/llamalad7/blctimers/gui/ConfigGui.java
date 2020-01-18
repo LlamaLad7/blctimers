@@ -37,6 +37,8 @@ public class ConfigGui extends GuiScreen {
     private boolean dragging;
     private GuiSlider scaleSlider;
     private GuiButton enabledButton;
+    private final String demoText = "Demo Timer: 0:10";
+    private final String demoTime = "0:10";
 
     public ConfigGui(BLCTimersMod mod) {
         dragging = false;
@@ -48,7 +50,9 @@ public class ConfigGui extends GuiScreen {
         //label = new GuiLabel(mc.fontRendererObj, 0, width / 2 - 50, height / 2 - 75, 100, 20, 0xFFFFFF);
         buttonList.add(enabledButton = new GuiButton(0, width / 2 - 50, height / 2 - 50, 100, 20, "Timers: " + getColoredBool(settings.enabled)));
         buttonList.add(scaleSlider = new GuiSlider(1, width / 2 - 50, height / 2 - 25, 100, 20, "Scale: ", "%", 10, 200, settings.scale, false, true));
-        buttonList.add(new GuiButton(2, width / 2 - 50, height / 2, 100, 20, "Reset Config"));
+        buttonList.add(enabledButton = new GuiButton(3, width / 2 - 50, height / 2, 100, 20, "Icons: " + getColoredBool(settings.showIcon)));
+        buttonList.add(enabledButton = new GuiButton(4, width / 2 - 50, height / 2 + 25, 100, 20, "Names: " + getColoredBool(settings.showText)));
+        buttonList.add(new GuiButton(2, width / 2 - 50, height / 2 + 50, 100, 20, "Reset Config"));
     }
 
     @Override
@@ -57,13 +61,14 @@ public class ConfigGui extends GuiScreen {
 
         super.drawScreen(mouseX, mouseY, partialTicks);
         drawCenteredString(mc.fontRendererObj, EnumChatFormatting.GREEN + EnumChatFormatting.BOLD.toString() + "Timers Mod " + EnumChatFormatting.RESET + "by " + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD.toString() + "LlamaLad7", width / 2, height / 2 - 75, 0xFFFFFF);
+        drawCenteredString(mc.fontRendererObj, "Drag the timers to reposition them", width / 2, height / 2 - 63, 0xFFFFFF);
         if (dragging) {
             settings.xpos = mouseX;
             settings.ypos = mouseY;
         }
         settings.scale = scaleSlider.getValueInt();
         if (settings.enabled && CountdownTimer.timers.size() == 0)
-            drawTimer(new ItemStack(diamond), "Demo Timer: 0:10");
+            drawTimer(new ItemStack(diamond));
     }
 
     @Override
@@ -85,16 +90,18 @@ public class ConfigGui extends GuiScreen {
         dragging = false;
     }
 
-    private void drawTimer(ItemStack itemStack, String text) {
+    private void drawTimer(ItemStack itemStack) {
         GlStateManager.pushMatrix();
         float scale = ((float) settings.scale) / 100;
         GlStateManager.scale(scale, scale, 0);
-        RenderHelper.enableGUIStandardItemLighting();
-        mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
-                (int) (settings.xpos / scale + 1),
-                (int) (settings.ypos / scale));
-        RenderHelper.disableStandardItemLighting();
-        drawString(mc.fontRendererObj, " " + text, (int) (16 + settings.xpos / scale),
+        if (settings.showIcon) {
+            RenderHelper.enableGUIStandardItemLighting();
+            mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
+                    (int) (settings.xpos / scale + 1),
+                    (int) (settings.ypos / scale));
+            RenderHelper.disableStandardItemLighting();
+        }
+        drawString(mc.fontRendererObj, " " + (settings.showText ? demoText : demoTime), (int) (16 + settings.xpos / scale),
                 (int) (settings.ypos / scale + (16 - 10) / 2 + 1),
                 0xFFFFFF);
         GlStateManager.popMatrix();
@@ -117,6 +124,14 @@ public class ConfigGui extends GuiScreen {
                 scaleSlider.setValue(settings.scale);
                 scaleSlider.updateSlider();
                 enabledButton.displayString = "Timers: " + getColoredBool(settings.enabled);
+                break;
+            case 3:
+                settings.showIcon = !settings.showIcon;
+                button.displayString = "Icons: " + getColoredBool(settings.showIcon);
+                break;
+            case 4:
+                settings.showText = !settings.showText;
+                button.displayString = "Names: " + getColoredBool(settings.showText);
                 break;
         }
     }

@@ -29,7 +29,7 @@ import java.util.Map;
 public class CountdownTimer {
     private static CountdownTimer INSTANCE = new CountdownTimer();
     public static boolean isRunning = false;
-    private static int tick = 0;
+    public static int tick = 0;
     public static boolean needsResetting = false;
     public static List<String> needRemoving = new ArrayList<>();
     public static Map<String, MCTimer> timers = new HashMap<>();

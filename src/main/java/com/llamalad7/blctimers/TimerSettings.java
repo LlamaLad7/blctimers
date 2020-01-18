@@ -23,6 +23,10 @@ public class TimerSettings {
     @ConfigOpt
     public boolean enabled = true;
     @ConfigOpt
+    public boolean showText = true;
+    @ConfigOpt
+    public boolean showIcon = true;
+    @ConfigOpt
     public int xpos = 2;
     @ConfigOpt
     public int ypos = 2;

@@ -16,6 +16,7 @@
  */
 package com.llamalad7.blctimers.utils;
 
+import com.llamalad7.blctimers.BLCTimersMod;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -35,6 +36,7 @@ public class MCTimer {
     }
 
     public String getFormattedTime() {
-        return name + ": " + Math.floorDiv(time, 60) + ":" + String.format("%02d", Math.floorMod(time, 60));
+        if (BLCTimersMod.getSettings().showText) return name + ": " + Math.floorDiv(time, 60) + ":" + String.format("%02d", Math.floorMod(time, 60));
+        else return Math.floorDiv(time, 60) + ":" + String.format("%02d", Math.floorMod(time, 60));
     }
 }
