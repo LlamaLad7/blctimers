@@ -26,6 +26,8 @@ public class TimerSettings {
     public int xpos;
     public int ypos;
     public int scale;
+    public boolean showText;
+    public boolean showIcon;
 
     public TimerSettings(Configuration config) {
         this.config = config;
@@ -47,6 +49,12 @@ public class TimerSettings {
         prop = config.get("All", "Enabled", true);
         prop.set(enabled = true);
 
+        prop = config.get("All", "ShowIcons", true);
+        prop.set(showIcon = true);
+
+        prop = config.get("All", "ShowNames", true);
+        prop.set(showText = true);
+
         prop = config.get("All", "XPosition", 2);
         prop.set(xpos = 2);
 
@@ -65,6 +73,14 @@ public class TimerSettings {
         prop = config.get("All", "Enabled", true);
         if (load) enabled = prop.getBoolean();
         else prop.set(enabled);
+
+        prop = config.get("All", "ShowIcons", true);
+        if (load) showIcon = prop.getBoolean();
+        else prop.set(showIcon);
+
+        prop = config.get("All", "ShowNames", true);
+        if (load) showText = prop.getBoolean();
+        else prop.set(showText);
 
         prop = config.get("All", "XPosition", 2);
         if (load) xpos = prop.getInt();

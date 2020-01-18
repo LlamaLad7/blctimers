@@ -89,11 +89,13 @@ public class HUDGui extends Gui {
 
     private void drawTimer(ItemStack itemStack, String text) {
         float scale = ((float) settings.scale) / 100;
-        RenderHelper.enableGUIStandardItemLighting();
-        mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
-                (int) (settings.xpos / scale + 1),
-                (int) (currentHeight / scale));
-        RenderHelper.disableStandardItemLighting();
+        if (settings.showIcon) {
+            RenderHelper.enableGUIStandardItemLighting();
+            mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
+                    (int) (settings.xpos / scale + 1),
+                    (int) (currentHeight / scale));
+            RenderHelper.disableStandardItemLighting();
+        }
         drawString(mc.fontRendererObj, " " + text, (int) (ICON_SIZE + settings.xpos / scale),
                 (int) (currentHeight / scale + (ICON_SIZE - LINE_HEIGHT) / 2 + 1),
                 TEXT_COLOR);
