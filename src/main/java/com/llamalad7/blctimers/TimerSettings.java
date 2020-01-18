@@ -35,6 +35,8 @@ public class TimerSettings {
 
     public void resetConfig() {
         enabled = true;
+        showText = true;
+        showIcon = true;
         xpos = 2;
         ypos = 2;
         scale = 100;
