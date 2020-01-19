@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CountdownTimer {
     private static CountdownTimer INSTANCE = new CountdownTimer();
@@ -29,7 +30,7 @@ public class CountdownTimer {
     public static int tick = 0;
     public static boolean needsResetting = false;
     public static List<String> needRemoving = new ArrayList<>();
-    public static Map<String, MCTimer> timers = new HashMap<>();
+    public static Map<String, MCTimer> timers = new ConcurrentHashMap<>();
 
     public CountdownTimer() {
     }
