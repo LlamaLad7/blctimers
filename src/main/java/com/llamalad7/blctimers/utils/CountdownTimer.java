@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CountdownTimer {
     private static CountdownTimer INSTANCE = new CountdownTimer();
@@ -32,7 +33,7 @@ public class CountdownTimer {
     public static int tick = 0;
     public static boolean needsResetting = false;
     public static List<String> needRemoving = new ArrayList<>();
-    public static Map<String, MCTimer> timers = new HashMap<>();
+    public static Map<String, MCTimer> timers = new ConcurrentHashMap<>();
 
     public CountdownTimer() {
     }

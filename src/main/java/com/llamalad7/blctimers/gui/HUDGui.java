@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HUDGui extends Gui {
 
@@ -67,7 +68,7 @@ public class HUDGui extends Gui {
 
     private void renderTimers() {
         if (CountdownTimer.needsResetting) {
-            CountdownTimer.timers = new HashMap<>();
+            CountdownTimer.timers = new ConcurrentHashMap<>();
             CountdownTimer.needsResetting = false;
         }
         if (CountdownTimer.needRemoving.size() != 0) {
