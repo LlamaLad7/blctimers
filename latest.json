@@ -1,4 +1,4 @@
 {
-  "version": "1.3",
-  "message": "Fixed a bug with timers being out of sync, and added an option to hide timer names and icons"
+  "version": "1.4",
+  "message": "Fixed not being able to open singleplayer worlds with the mod installed"
 }

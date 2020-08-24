@@ -47,7 +47,7 @@ public class TimerListener {
 
     @SubscribeEvent
     public void onNetwork2(FMLNetworkEvent event) {
-        if (event instanceof FMLNetworkEvent.ClientConnectedToServerEvent) {
+        if (event instanceof FMLNetworkEvent.ClientConnectedToServerEvent && !((FMLNetworkEvent.ClientConnectedToServerEvent) event).isLocal) {
             event.manager.channel().pipeline().addAfter("encoder", "test_packet_handler", new SimpleChannelInboundHandler<Packet>() {
                 @Override
                 protected void channelRead0(ChannelHandlerContext ctx, Packet msg) throws Exception {
